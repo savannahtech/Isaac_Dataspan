@@ -1,0 +1,13 @@
+.custom-range-slider .rs-slider-progress-bar {
+    background-color: #ffd75c; 
+  }
+  
+  .custom-range-slider .rs-slider-handle,
+  .custom-range-slider .rs-slider-handle::before,
+  .custom-range-slider .rs-slider-handle::after {
+    border-color: #ffd75c; /* Circle color */
+    width: 20px; /* Increase circle width */
+    height: 20px; /* Increase circle height */
+    margin-top: -2px;
+  }
+  
