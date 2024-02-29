@@ -18,7 +18,7 @@ const useS3Content = () => {
   const fetchDataFromS3 = async (url: string) => {
     const encodedUrl = url.split("/").map(encodeURIComponent).join("/"); // Encode each path component separately
     const fullKey = `${albumBucketName}/${encodedUrl}`; // Construct full key
-    console.log("Full Key:", fullKey); // Log full key
+    // console.log("Full Key:", fullKey); // Log full key
     try {
       const s3Object = await s3
         .getObject({ Bucket: albumBucketName, Key: encodedUrl })
@@ -58,9 +58,9 @@ const useS3Content = () => {
 
   async function generateImageResponse(subRoute: string, mainKey: string) {
     const label = `bone-fracture-detection/${subRoute}/labels/${mainKey}.txt`;
-    console.log({label})
+    // console.log({label})
     const labelContentResponse = await fetchDataFromS3(label);
-    console.log({ labelContentResponse }); // Check the response from AWS S3
+    // console.log({ labelContentResponse }); // Check the response from AWS S3
   
     let labelContent = "";
   
@@ -73,14 +73,14 @@ const useS3Content = () => {
       }
     }
   
-    console.log({ labelContent }); 
+    // console.log({ labelContent }); 
     const dataPoints = labelContent.split('\n').map(line => line.trim()).filter(line => line); 
-    console.log({ dataPoints });
+    // console.log({ dataPoints });
   
     // Convert string of floats separated by spaces to an array of floats
     const floatArray = dataPoints.flatMap(point => point.split(' ').map(parseFloat));
 
-    console.log({ floatArray });
+    // console.log({ floatArray });
 
     return floatArray;
   }

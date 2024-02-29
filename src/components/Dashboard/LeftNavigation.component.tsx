@@ -8,11 +8,18 @@ import { RangeSlider, Slider } from "rsuite";
 import "../../styles/custom-range-slider.css";
 import { classAttr } from "../../utils";
 
-const LeftNavigation = () => {
+const LeftNavigation = ({
+  filters,
+  setFilters,
+}: {
+  filters: number[];
+  setFilters: React.Dispatch<React.SetStateAction<number[]>>;
+}) => {
   const [filterSelection, setFilterSelection] = useState({
     selectAll: false,
     deselectAll: false,
   });
+  const [min_max, setMinMax] = useState<any>([0, 4])
 
   const filterOptions = [
     {
@@ -55,21 +62,38 @@ const LeftNavigation = () => {
       >
         {Object.keys(classAttr).map((key) => (
           <FilterOptionsButton
-            style={{ borderColor: classAttr[key].color }}
+            style={{
+              borderColor: classAttr[key].color,
+              backgroundColor: filters.includes(classAttr[key].classId)
+                ? classAttr[key].color
+                : "transparent",
+              color: filters.includes(classAttr[key].classId)
+              ? 'white'
+              : "black",
+            }}
+            onClick={() =>
+              setFilters((e) =>
+                e.includes(classAttr[key].classId)
+                  ? e.filter((item) => item !== classAttr[key].classId)
+                  : [...e, classAttr[key].classId]
+              )
+            }
             key={key}
           >
-            <RxDotFilled size={22} color={classAttr[key].color} />{" "}
+            <RxDotFilled size={22} color={filters.includes(classAttr[key].classId)
+                ? 'white'
+                : classAttr[key].color} />{" "}
             {classAttr[key].name}
           </FilterOptionsButton>
         ))}
       </div>
-      <FilterHeader>Poligon range</FilterHeader>
+      <FilterHeader>Polygon range</FilterHeader>
       <FlexSeperate style={{ marginTop: 10 }}>
         <FilterRangeText>
-          min <span style={{ fontWeight: "bold" }}>0</span>
+          min <span style={{ fontWeight: "bold" }}>{min_max[0]}</span>
         </FilterRangeText>
         <FilterRangeText>
-          max <span style={{ fontWeight: "bold" }}>4</span>
+          max <span style={{ fontWeight: "bold" }}>{min_max[1]}</span>
         </FilterRangeText>
       </FlexSeperate>
       <div style={{ position: "relative" }}>
@@ -77,13 +101,13 @@ const LeftNavigation = () => {
           progress
           style={{ marginTop: 16 }}
           className="custom-range-slider"
-          defaultValue={[1, 3]}
+          defaultValue={min_max}
           min={0}
           max={4}
-
-          //   onChange={(value) => {
-          //     setValue(value);
-          //   }}
+            
+            onChange={(value) => {
+              setMinMax(value)
+            }}
         />
       </div>
       <FlexSeperate style={{ marginTop: 30 }}>
@@ -105,6 +129,10 @@ const Container = styled.div`
   border: 1px solid #d1d1d6;
   height: 100%;
   padding: 15px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Logo = styled.img`

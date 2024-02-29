@@ -11,7 +11,7 @@ import useS3Content from "../../hooks/useS3Content";
 import ImageViewer from "./ImageViewer.component";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const Workspace = () => {
+const Workspace = ({filters} : {filters: number[]}) => {
   const s3 = useS3Content();
   const routes = [
     { to: "/", name: "All groups" },
@@ -48,7 +48,7 @@ const Workspace = () => {
   const retrieveData = async () => {
     try {
       const content = await s3.generateImageResponse('train', 'fracture-of-the-humeral-capitellum-milch-type-1-1-1-_jpg.rf.4c16d0817782b56497b9f18bca2b0fdd')
-      console.log({ content });
+      // console.log({ content });
     } catch (e) {
       console.error("An error occured while retrieving data: ", e);
     }
@@ -106,6 +106,7 @@ const Workspace = () => {
           repo={url.replace("/", "")}
           setPagination={setPagination}
           page={pagination.currentPage}
+          filters={filters}
         />
       </div>
       {pagination.current_images > 0 && (
@@ -162,6 +163,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.div`
